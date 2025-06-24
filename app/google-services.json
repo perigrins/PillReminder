@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "969293426867",
+    "firebase_url": "https://pill-reminder-823fb-default-rtdb.firebaseio.com",
+    "project_id": "pill-reminder-823fb",
+    "storage_bucket": "pill-reminder-823fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969293426867:android:b5ddfcdb9c7567478680c6",
+        "android_client_info": {
+          "package_name": "com.example.pillreminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACZOWWb_00Wnq5HeaTTzZRGoDV3QbiHkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

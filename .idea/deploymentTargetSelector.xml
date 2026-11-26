@@ -18,6 +18,7 @@
       </SelectionState>
       <SelectionState runConfigName="LoginRegisterActivityTest">
         <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="LoginRegisterActivityTest (1)">
         <option name="selectionMode" value="DROPDOWN" />

@@ -15,7 +15,7 @@
         android:theme="@style/Theme.PillReminder"
         >
         <activity
-            android:name=".MainActivity"
+            android:name=".BlisterActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PillReminder">
@@ -26,9 +26,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MainActivity" android:exported="true" />
         <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".LoginRegisterActivity"></activity>
-        <activity android:name=".BlisterActivity"></activity>
 
         <receiver android:name=".NotificationReceiver" />
         <receiver android:name=".BlisterReminderReceiver" />

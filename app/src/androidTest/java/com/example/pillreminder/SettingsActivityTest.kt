@@ -91,8 +91,6 @@ class SettingsActivityTest {
         composeTestRule.onNodeWithTag("firstPillDateError")
             .assertIsDisplayed()
             .assertTextEquals("Invalid date format")
-
-        //composeTestRule.onNodeWithText("Invalid date format").assertIsDisplayed()
     }
 
     /**

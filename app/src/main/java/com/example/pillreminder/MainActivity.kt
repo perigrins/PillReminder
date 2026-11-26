@@ -66,7 +66,9 @@ class MainActivity : ComponentActivity() {
  */
 @Composable
 fun AppContent() {
-    LazyColumn(
+    LoginButton()
+
+     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
@@ -95,9 +97,6 @@ fun AppContent() {
                 modifier = Modifier.height(40.dp),
                 color = Color.Transparent
             )
-        }
-        item {
-            LoginButton()
         }
         item {
             PillPackButton()
@@ -146,10 +145,6 @@ fun LoginButton() {
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-            Text(
-                text = "Login",
-                fontSize = 26.sp
-            )
         }
     }
 }

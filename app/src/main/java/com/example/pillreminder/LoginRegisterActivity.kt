@@ -6,14 +6,30 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.ModalDrawer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -27,10 +43,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +58,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.util.regex.Pattern
 
 class LoginRegisterActivity : ComponentActivity() {
@@ -81,7 +102,8 @@ fun AuthSwitchContent(auth: FirebaseAuth = FirebaseAuth.getInstance()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .background(Color.White)
+            .padding(horizontal = 12.dp, vertical = 24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -236,7 +258,10 @@ fun LoginScreen(viewModel: LoginViewModel, onSuccess: () -> Unit) {
     val context = LocalContext.current
 
     if (!showResetPassword) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "Login",
                 style = MaterialTheme.typography.headlineMedium,
@@ -246,7 +271,7 @@ fun LoginScreen(viewModel: LoginViewModel, onSuccess: () -> Unit) {
 
             OutlinedTextField(
                 value = viewModel.email,
-                modifier = Modifier.testTag("LoginEmail"),
+                modifier = Modifier.fillMaxWidth().testTag("LoginEmail"),
                 onValueChange = { viewModel.email = it; viewModel.clearError() },
                 label = { Text("E-mail") }
             )
@@ -254,7 +279,7 @@ fun LoginScreen(viewModel: LoginViewModel, onSuccess: () -> Unit) {
 
             OutlinedTextField(
                 value = viewModel.password,
-                modifier = Modifier.testTag("LoginPassword"),
+                modifier = Modifier.fillMaxWidth().testTag("LoginPassword"),
                 onValueChange = { viewModel.password = it; viewModel.clearError() },
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation()
@@ -299,12 +324,16 @@ fun LoginScreen(viewModel: LoginViewModel, onSuccess: () -> Unit) {
             }
         }
     } else {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text("Reset your password", style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = viewModel.email,
+                modifier = Modifier.fillMaxWidth(),
                 onValueChange = { viewModel.email = it },
                 label = { Text("E-mail") }
             )
@@ -378,7 +407,10 @@ fun RegisterScreen(viewModel: RegisterViewModel, onSuccess: () -> Unit) {
     val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = "Register",
             style = MaterialTheme.typography.headlineMedium,
@@ -388,6 +420,7 @@ fun RegisterScreen(viewModel: RegisterViewModel, onSuccess: () -> Unit) {
 
         OutlinedTextField(
             value = viewModel.username,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = { viewModel.username = it; viewModel.clearError() },
             label = { Text("Username") }
         )
@@ -395,7 +428,7 @@ fun RegisterScreen(viewModel: RegisterViewModel, onSuccess: () -> Unit) {
 
         OutlinedTextField(
             value = viewModel.email,
-            modifier = Modifier.testTag("RegisterEmail"),
+            modifier = Modifier.fillMaxWidth().testTag("RegisterEmail"),
             onValueChange = { viewModel.email = it; viewModel.clearError() },
             label = { Text("Email") }
         )
@@ -403,7 +436,7 @@ fun RegisterScreen(viewModel: RegisterViewModel, onSuccess: () -> Unit) {
 
         OutlinedTextField(
             value = viewModel.password,
-            modifier = Modifier.testTag("RegisterPassword"),
+            modifier = Modifier.fillMaxWidth().testTag("RegisterPassword"),
             onValueChange = { viewModel.password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation()
@@ -467,30 +500,42 @@ fun LogOutScreen(email: String, onLogout: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Hello $email!", style = MaterialTheme.typography.headlineMedium, fontSize = 22.sp)
-        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Hello $email!",
+                style = MaterialTheme.typography.headlineMedium,
+                fontSize = 22.sp
+            )
+            Spacer(modifier = Modifier.height(30.dp))
+
+            SettingCardLoginScreen {
+                ColorChooser()
+            }
+        }
 
         TextButton(
             onClick = {
                 onLogout()
                 Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
-            }
+            },
+            modifier = Modifier.padding(bottom = 24.dp)
         ) {
             Text(
-                text="Log out",
-                fontSize = 15.sp,
-                color = Color.Black
-            )
+                text = "Log out",
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp,
+                color = Color.Black)
         }
     }
 }
-
-
-
 
 /**
  * Function handling resetting the password
@@ -519,6 +564,138 @@ fun resetPassword (
                 Toast.makeText(context, "Restoring password failed", Toast.LENGTH_SHORT).show()
             }
         }
+}
+
+data class PillMotif(
+    val key: String,
+    val name: String,
+    val color: Color,
+    val borderColor: Color
+)
+
+@Composable
+fun ColorChooser(isInTestMode: Boolean = false) {
+    val context = LocalContext.current
+    val userId = if (isInTestMode || LocalView.current.isInEditMode) null else FirebaseAuth.getInstance().currentUser?.uid
+    var selectedMotif by remember { mutableStateOf("GREEN") }
+
+    val motifs = listOf(
+        PillMotif("GREEN", "Green", Color(0xff699166), Color(0xFF2C4A29)),
+        PillMotif("BLUE", "Blue", Color(0xFF4B779D), Color(0xFF1B3D59)),
+        PillMotif("PURPLE", "Purple", Color(0xFF624475), Color(0xFF381F47)),
+        PillMotif("PINK", "Pink", Color(0xFF9F345B), Color(0xFF5E1731)),
+        PillMotif("TEAL", "Teal", Color(0xFF00897B), Color(0xFF004D40)),
+        PillMotif("ORANGE", "Orange", Color(0xFFF67D56), Color(0xFFB34320))
+    )
+
+    if (!isInTestMode && userId != null) {
+        LaunchedEffect(userId) {
+            val database = FirebaseDatabase.getInstance()
+            database.getReference("pillMotif").child(userId).get().addOnSuccessListener { snapshot ->
+                snapshot.getValue(String::class.java)?.let {
+                    selectedMotif = it
+                }
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Choose active pill color",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Black,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            motifs.forEach { motif ->
+                val isSelected = selectedMotif == motif.key
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.clickable {
+                        selectedMotif = motif.key
+                        if (userId != null && !isInTestMode) {
+                            FirebaseDatabase.getInstance().getReference("pillMotif").child(userId)
+                                .setValue(motif.key)
+                                .addOnSuccessListener {
+                                    Toast.makeText(
+                                        context,
+                                        "${motif.name} saved!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                        }
+                    }
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(motif.color)
+                            .border(
+                                width = if (isSelected) 3.5.dp else 2.dp,
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else motif.borderColor,
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (isSelected) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Selected",
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = motif.name,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+/**
+ * Card container for a setting item.
+ */
+@Composable
+fun SettingCardLoginScreen(
+    content: @Composable () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        border = BorderStroke(1.dp, Color(0xFF8F988F))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            content()
+        }
+    }
 }
 
 

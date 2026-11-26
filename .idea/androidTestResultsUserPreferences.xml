@@ -61,6 +61,7 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="Duration" value="90" />
+                  <entry key="OnePlus CPH2581" value="120" />
                   <entry key="Pixel_3a_API_34" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
